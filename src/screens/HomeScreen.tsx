@@ -1,49 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, RefreshControl } from 'react-native';
-import { fetchPopularMovies, getPosterUrl } from '../services/api';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { TMDB_LISTS } from '../data/tmdbLists';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
-  const [movies, setMovies] = useState<Array<any>>([]);
-  const [refreshing, setRefreshing] = useState(false);
-
-  async function load() {
-    try {
-      setRefreshing(true);
-      const data: any = await fetchPopularMovies();
-      // service may return either an array or an object with results
-      const items = Array.isArray(data) ? data : data?.results ?? [];
-      setMovies(items);
-    } catch (err) {
-      console.error('Failed loading movies', err);
-    } finally {
-      setRefreshing(false);
-    }
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
-
   function renderItem({ item }: { item: any }) {
     return (
       <TouchableOpacity
-        style={styles.row}
-        onPress={() => navigation.navigate('Detail', { movieId: item.id })}
+        style={styles.card}
+        onPress={() => navigation.navigate('List', { listId: item.id, title: item.title })}
       >
-        <Image
-          source={{ uri: getPosterUrl(item.poster_path, 'w185') || undefined }}
-          style={styles.poster}
-        />
-        <View style={styles.meta}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text numberOfLines={3} style={styles.overview}>
-            {item.overview}
-          </Text>
-        </View>
+        <Text style={styles.title}>{item.title}</Text>
       </TouchableOpacity>
     );
   }
@@ -51,10 +21,9 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={movies}
-        keyExtractor={(m) => String(m.id)}
+        data={TMDB_LISTS}
+        keyExtractor={(i) => String(i.id)}
         renderItem={renderItem}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={load} />}
         contentContainerStyle={{ padding: 12 }}
       />
     </View>
@@ -63,9 +32,11 @@ export default function HomeScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  row: { flexDirection: 'row', marginBottom: 12, alignItems: 'center' },
-  poster: { width: 80, height: 120, borderRadius: 6, backgroundColor: '#eee' },
-  meta: { marginLeft: 12, flex: 1 },
-  title: { fontSize: 16, fontWeight: '600' },
-  overview: { color: '#666', marginTop: 6 },
+  card: {
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: '#f5f5f7',
+    marginBottom: 12,
+  },
+  title: { fontSize: 18, fontWeight: '700' },
 });
