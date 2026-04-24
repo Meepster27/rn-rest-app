@@ -1,1 +1,1 @@
-cd /Users/meep/movieapp/rn-rest-app && git pull && echo "EXPO_PUBLIC_TMDB_API_KEY=31d82b4124b49a51def61eaa48aff1e1" > .env && npm install && ./node_modules/.bin/expo start --clear
+cd /Users/meep/movieapp/rn-rest-app && ./node_modules/.bin/expo start --clearcd /Users/meep/movieapp/rn-rest-app && ./node_modules/.bin/expo start --clearcd /Users/meep/movieapp/rn-rest-app && ./node_modules/.bin/expo start --clearcd /Users/meep/movieapp/rn-rest-app && ./node_modules/.bin/expo start --clear
