@@ -1,13 +1,4 @@
-import Constants from 'expo-constants';
-
-function getExtra() {
-  const anyConst: any = Constants as any;
-  const expoConfig = anyConst.expoConfig ?? anyConst.manifest;
-  return expoConfig?.extra || {};
-}
-
-const EXTRA = getExtra();
-const API_KEY: string = EXTRA.TMDB_API_KEY || process.env.TMDB_API_KEY || '';
+const API_KEY: string = process.env.EXPO_PUBLIC_TMDB_API_KEY ?? '';
 
 const BASE = 'https://api.themoviedb.org/3';
 
