@@ -11,8 +11,5 @@
     "outDir": "./dist"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
-  "fetchList": "TMDB_LISTS[0].id",
-  "responseShape": "data.items or data?.items or data?.results depending on TMDB list response shape",
-  "consoleLog": "data"
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

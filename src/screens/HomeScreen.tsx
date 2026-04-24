@@ -11,7 +11,7 @@ export default function HomeScreen({ navigation }: Props) {
     return (
       <TouchableOpacity
         style={styles.card}
-        onPress={() => navigation.navigate('List', { listId: item.id, title: item.title })}
+        onPress={() => navigation.navigate(item.route as any, { listId: item.id, title: item.title })}
       >
         <Text style={styles.title}>{item.title}</Text>
       </TouchableOpacity>

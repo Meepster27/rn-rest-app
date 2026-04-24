@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { fetchList, getPosterUrl } from '../services/api';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import Loading from '../components/Loading';
+import ErrorView from '../components/ErrorView';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'List'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'FamilyLove' | 'DramaLoveStories' | 'ComedyLoveStories'>;
 
 export default function ListScreen({ navigation, route }: Props) {
   const { listId, title } = route.params;
   const [items, setItems] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
     (async () => {
       try {
         setLoading(true);
+        setError(null);
         const data: any = await fetchList(listId);
-        // TMDB user lists typically return 'items'; fall back to 'results'
+        // TMDB user lists return 'items'; public endpoints return 'results'
         const listItems = data?.items ?? data?.results ?? [];
         if (mounted) setItems(listItems);
-      } catch (err) {
-        console.error('Failed to load list', err);
+      } catch (err: any) {
+        if (mounted) setError(err?.message ?? 'Failed to load list');
       } finally {
         if (mounted) setLoading(false);
       }
@@ -41,7 +45,8 @@ export default function ListScreen({ navigation, route }: Props) {
     );
   }
 
-  if (loading) return <View style={styles.center}><ActivityIndicator size="large" /></View>;
+  if (loading) return <Loading />;
+  if (error) return <ErrorView message={error} />;
 
   return (
     <View style={styles.container}>
@@ -58,7 +63,6 @@ export default function ListScreen({ navigation, route }: Props) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { fontSize: 20, fontWeight: '700', padding: 12 },
   row: { flexDirection: 'row', marginBottom: 12, alignItems: 'center' },
   poster: { width: 80, height: 120, borderRadius: 6, backgroundColor: '#eee' },

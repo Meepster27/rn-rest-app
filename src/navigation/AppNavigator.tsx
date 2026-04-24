@@ -6,10 +6,11 @@ import HomeScreen from '../screens/HomeScreen';
 import ListScreen from '../screens/ListScreen';
 import DetailScreen from '../screens/DetailScreen';
 
-// Define the param list for the navigator
 export type RootStackParamList = {
   Home: undefined;
-  List: { listId: number; title: string };
+  FamilyLove: { listId: number; title: string };
+  DramaLoveStories: { listId: number; title: string };
+  ComedyLoveStories: { listId: number; title: string };
   Detail: { movieId: number };
 };
 
@@ -19,9 +20,11 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Lists' }} />
-        <Stack.Screen name="List" component={ListScreen} options={({ route }) => ({ title: route.params?.title ?? 'List' })} />
-        <Stack.Screen name="Detail" component={DetailScreen} options={{ title: 'Details' }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Movie Lists' }} />
+        <Stack.Screen name="FamilyLove" component={ListScreen} options={{ title: 'Family Love' }} />
+        <Stack.Screen name="DramaLoveStories" component={ListScreen} options={{ title: 'Drama Love Stories' }} />
+        <Stack.Screen name="ComedyLoveStories" component={ListScreen} options={{ title: 'Comedy Love Stories' }} />
+        <Stack.Screen name="Detail" component={DetailScreen} options={{ title: 'Movie Details' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
