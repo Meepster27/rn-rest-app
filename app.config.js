@@ -1,2 +1,2 @@
-module.exports = require('./app.json').expo;
+module.exports = require('./app.json');
 
