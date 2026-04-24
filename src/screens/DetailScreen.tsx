@@ -31,7 +31,7 @@ export default function DetailScreen({ navigation, route }: Props) {
       }
     })();
     return () => { mounted = false; };
-  }, [movieId]);
+  }, [movieId, navigation]);
 
   if (loading) return <Loading />;
   if (error) return <ErrorView message={error} />;
